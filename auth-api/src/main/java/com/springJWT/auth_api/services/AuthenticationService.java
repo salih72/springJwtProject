@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -39,8 +38,7 @@ public class AuthenticationService {
 
     public User authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken
-                        (
+                new UsernamePasswordAuthenticationToken(
                         input.getEmail(),
                         input.getPassword()
                 )
@@ -50,4 +48,3 @@ public class AuthenticationService {
                 .orElseThrow();
     }
 }
-
