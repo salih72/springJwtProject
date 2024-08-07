@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RegisterForm from './components/Register';
 import LoginForm from './components/Login';
 import Dashboard from './components/Dashboard'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
