@@ -25,7 +25,6 @@ const LoginForm = () => {
       .then(response => {
         console.log(response.data);
         localStorage.setItem('token', response.data.token);
-        navigate('/dashboard');
       })
       .catch(error => {
         console.error('There was an error!', error);
