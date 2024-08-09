@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Sidebar.module.css';  // CSS Modules kullanımı
+import styles from './AdminSidebar.module.css';  // CSS Modules kullanımı
 
 const Sidebar = () => {
   return (
@@ -7,6 +7,7 @@ const Sidebar = () => {
       <ul>
         <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/products">Products</a></li>
+        <li><a href="/productsAdmin">Admin Panel</a></li>
       </ul>
     </div>
   );
