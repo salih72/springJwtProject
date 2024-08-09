@@ -14,6 +14,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import static com.springJWT.auth_api.entities.Role.ADMIN;
+import static com.springJWT.auth_api.entities.Role.USER;
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -34,7 +38,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/adminPanel").hasRole("ADMIN")
+                        .requestMatchers("/adminPanel").hasRole(ADMIN.name())
+                        .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

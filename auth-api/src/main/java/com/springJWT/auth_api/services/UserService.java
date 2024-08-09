@@ -20,15 +20,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User createUser(String fullName, String email, String password, Role role) {
-        User user = User.builder()
-                .fullName(fullName)
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .role(role)
-                .build();
-        return userRepository.save(user);
-    }
 
     public List<User> getAllUsers() {
         Iterable<User> iterable = userRepository.findAll();

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { jwtDecode } from  'jwt-decode';
 
 const LoginForm = () => {
   const [credentials, setCredentials] = useState({
@@ -23,8 +24,18 @@ const LoginForm = () => {
     e.preventDefault();
     axios.post('/auth/login', credentials)
       .then(response => {
-        console.log(response.data);
-        localStorage.setItem('token', response.data.token);
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        
+        // Token'ı decode et ve rol kontrolü yap
+        const decodedToken = jwtDecode(token);
+        console.log(token);
+        console.log(decodedToken);
+        if (decodedToken.role && decodedToken.role.includes('ADMIN')) {
+          navigate('/adminPanel');  // Admin rolü varsa adminPanel sayfasına yönlendir
+        } else {
+          setAlert({ show: true, message: 'You do not have permission to access the admin panel.', variant: 'warning' });
+        }
       })
       .catch(error => {
         console.error('There was an error!', error);
@@ -63,14 +74,18 @@ const LoginForm = () => {
                 required
               />
             </Form.Group>
-            <div className="d-flex justify-content-between">
-              <Button variant="primary" type="submit" className="mt-3">
-                Login
-              </Button>
-              <Button variant="secondary" className="mt-3" onClick={handleRegisterRedirect}>
-                Register
-              </Button>
-            </div>
+            <Row className="mt-3">
+              <Col>
+                <Button variant="primary" type="submit" className="w-100">
+                  Login
+                </Button>
+              </Col>
+              <Col>
+                <Button variant="secondary" className="w-100" onClick={handleRegisterRedirect}>
+                  Register
+                </Button>
+              </Col>
+            </Row>
           </Form>
         </Col>
       </Row>

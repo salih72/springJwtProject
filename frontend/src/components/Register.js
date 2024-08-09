@@ -74,12 +74,18 @@ const RegisterForm = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="mt-3 mr-2">
-              Register
-            </Button>
-            <Button variant="secondary" className="mt-3" onClick={handleLoginRedirect}>
-              Login
-            </Button>
+            <Row className="mt-3">
+              <Col>
+                <Button variant="primary" type="submit" className="w-100">
+                  Register
+                </Button>
+              </Col>
+              <Col>
+                <Button variant="secondary" className="w-100" onClick={handleLoginRedirect}>
+                  Login
+                </Button>
+              </Col>
+            </Row>
           </Form>
         </Col>
       </Row>

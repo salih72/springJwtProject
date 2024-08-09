@@ -2,6 +2,7 @@ package com.springJWT.auth_api.services;
 
 import com.springJWT.auth_api.dtos.LoginUserDto;
 import com.springJWT.auth_api.dtos.RegisterUserDto;
+import com.springJWT.auth_api.entities.Role;
 import com.springJWT.auth_api.entities.User;
 import com.springJWT.auth_api.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +29,11 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
-        User user = new User()
-                .setFullName(input.getFullName())
-                .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()));
-
+        User user = new User();
+        user.setFullName(input.getFullName());
+        user.setEmail(input.getEmail());
+        user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setRole(Role.USER);
         return userRepository.save(user);
     }
 
