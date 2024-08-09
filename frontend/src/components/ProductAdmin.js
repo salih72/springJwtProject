@@ -6,6 +6,8 @@ import axios from 'axios';
 const ProductAdmin = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -16,7 +18,13 @@ const ProductAdmin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/products')
+    const token = localStorage.getItem('token'); // JWT token'ı localStorage'dan alın
+
+    axios.get('/api/products', {
+      headers: {
+        Authorization: `Bearer ${token}` // Token'ı Authorization başlığı altında gönderin
+      }
+    })
       .then(response => {
         setProducts(response.data);
       })
@@ -26,24 +34,67 @@ const ProductAdmin = () => {
   }, []);
 
   const handleDeleteProduct = (id) => {
-    axios.delete(`/api/products/${id}`)
-      .then(() => {
-        setProducts(products.filter(product => product.id !== id));
-      })
-      .catch(error => {
-        console.error('Error deleting product:', error);
-      });
+    const token = localStorage.getItem('token'); // JWT token'ı localStorage'dan alın
+  
+    axios.delete(`/api/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Token'ı Authorization başlığı altında gönderin
+      }
+    })
+    .then(() => {
+      setProducts(products.filter(product => product.id !== id));
+    })
+    .catch(error => {
+      console.error('Error deleting product:', error);
+    });
   };
 
-  const handleAddProduct = () => {
-    axios.post('/api/products', newProduct)
-      .then(response => {
-        setProducts([...products, response.data]);
-        setShowModal(false);
-      })
-      .catch(error => {
-        console.error('Error adding product:', error);
-      });
+  const handleAddOrUpdateProduct = () => {
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      console.error('JWT token bulunamadı');
+      return;
+    }
+  
+    console.log('JWT token:', token);
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  
+    if (editMode && currentProduct) {
+      axios.put(`/api/products/${currentProduct.id}`, newProduct, config)
+        .then(response => {
+          setProducts(products.map(product =>
+            product.id === currentProduct.id ? response.data : product
+          ));
+          resetForm();
+        })
+        .catch(error => {
+          console.error('Error updating product:', error);
+        });
+    } else {
+      axios.post('/api/products', newProduct, config)
+        .then(response => {
+          setProducts([...products, response.data]);
+          resetForm();
+        })
+        .catch(error => {
+          console.error('Error adding product:', error);
+        });
+    }
+  };
+  
+  
+
+  const handleEditProduct = (product) => {
+    setCurrentProduct(product);
+    setNewProduct(product);
+    setEditMode(true);
+    setShowModal(true);
   };
 
   const handleInputChange = (e) => {
@@ -51,6 +102,18 @@ const ProductAdmin = () => {
       ...newProduct,
       [e.target.name]: e.target.value
     });
+  };
+
+  const resetForm = () => {
+    setNewProduct({
+      name: '',
+      description: '',
+      price: '',
+      image: ''
+    });
+    setShowModal(false);
+    setEditMode(false);
+    setCurrentProduct(null);
   };
 
   const handleViewDetails = (id) => {
@@ -76,6 +139,9 @@ const ProductAdmin = () => {
                 <Button variant="primary" onClick={() => handleViewDetails(product.id)}>
                   View Details
                 </Button>
+                <Button variant="warning" onClick={() => handleEditProduct(product)} className="ml-2">
+                  Edit
+                </Button>
                 <Button variant="danger" onClick={() => handleDeleteProduct(product.id)} className="ml-2">
                   Delete
                 </Button>
@@ -85,9 +151,9 @@ const ProductAdmin = () => {
         ))}
       </Row>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={resetForm}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Product</Modal.Title>
+          <Modal.Title>{editMode ? 'Edit Product' : 'Add New Product'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -98,6 +164,7 @@ const ProductAdmin = () => {
                 name="name"
                 value={newProduct.name}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formDescription">
@@ -107,6 +174,7 @@ const ProductAdmin = () => {
                 name="description"
                 value={newProduct.description}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formPrice">
@@ -116,6 +184,7 @@ const ProductAdmin = () => {
                 name="price"
                 value={newProduct.price}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formImage">
@@ -125,15 +194,16 @@ const ProductAdmin = () => {
                 name="image"
                 value={newProduct.image}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={resetForm}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAddProduct}>
+          <Button variant="primary" onClick={handleAddOrUpdateProduct}>
             Save Changes
           </Button>
         </Modal.Footer>
