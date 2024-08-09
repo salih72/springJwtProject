@@ -6,8 +6,6 @@ import axios from 'axios';
 const ProductAdmin = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState(null);
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -18,11 +16,11 @@ const ProductAdmin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); // JWT token'ı localStorage'dan alın
+    const token = localStorage.getItem('token');
 
     axios.get('/api/products', {
       headers: {
-        Authorization: `Bearer ${token}` // Token'ı Authorization başlığı altında gönderin
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
@@ -34,11 +32,11 @@ const ProductAdmin = () => {
   }, []);
 
   const handleDeleteProduct = (id) => {
-    const token = localStorage.getItem('token'); // JWT token'ı localStorage'dan alın
+    const token = localStorage.getItem('token');
   
     axios.delete(`/api/products/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}` // Token'ı Authorization başlığı altında gönderin
+        Authorization: `Bearer ${token}`
       }
     })
     .then(() => {
@@ -49,7 +47,7 @@ const ProductAdmin = () => {
     });
   };
 
-  const handleAddOrUpdateProduct = () => {
+  const handleAddProduct = () => {
     const token = localStorage.getItem('token');
   
     if (!token) {
@@ -57,44 +55,20 @@ const ProductAdmin = () => {
       return;
     }
   
-    console.log('JWT token:', token);
-  
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
   
-    if (editMode && currentProduct) {
-      axios.put(`/api/products/${currentProduct.id}`, newProduct, config)
-        .then(response => {
-          setProducts(products.map(product =>
-            product.id === currentProduct.id ? response.data : product
-          ));
-          resetForm();
-        })
-        .catch(error => {
-          console.error('Error updating product:', error);
-        });
-    } else {
-      axios.post('/api/products', newProduct, config)
-        .then(response => {
-          setProducts([...products, response.data]);
-          resetForm();
-        })
-        .catch(error => {
-          console.error('Error adding product:', error);
-        });
-    }
-  };
-  
-  
-
-  const handleEditProduct = (product) => {
-    setCurrentProduct(product);
-    setNewProduct(product);
-    setEditMode(true);
-    setShowModal(true);
+    axios.post('/api/products', newProduct, config)
+      .then(response => {
+        setProducts([...products, response.data]);
+        resetForm();
+      })
+      .catch(error => {
+        console.error('Error adding product:', error);
+      });
   };
 
   const handleInputChange = (e) => {
@@ -112,8 +86,6 @@ const ProductAdmin = () => {
       image: ''
     });
     setShowModal(false);
-    setEditMode(false);
-    setCurrentProduct(null);
   };
 
   const handleViewDetails = (id) => {
@@ -122,38 +94,45 @@ const ProductAdmin = () => {
 
   return (
     <Container className="mt-5">
-      <Button variant="success" onClick={() => setShowModal(true)} className="mb-3">
-        Add Product
-      </Button>
       <Row>
         {products.map((product) => (
-          <Col md={4} className="mb-4" key={product.id}>
-            <Card>
-              <Card.Img variant="top" src={product.image} alt={product.name} />
-              <Card.Body>
-                <Card.Title>{product.name}</Card.Title>
-                <Card.Text>{product.description}</Card.Text>
-                <Card.Text>
+          <Col md={3} sm={6} xs={12} className="mb-4" key={product.id}>
+            <Card className="shadow-sm h-100 d-flex flex-column">
+              <Card.Img 
+                variant="top" 
+                src={product.image} 
+                alt={product.name} 
+                style={{ height: '150px', objectFit: 'cover' }} 
+              />
+              <Card.Body className="d-flex flex-column p-2">
+                <Card.Title className="text-center" style={{ fontSize: '1.1rem' }}>{product.name}</Card.Title>
+                <Card.Text className="text-muted text-truncate" style={{ fontSize: '0.9rem' }}>{product.description}</Card.Text>
+                <Card.Text className="mt-auto text-center" style={{ fontSize: '0.9rem' }}>
                   <strong>Price: </strong>${product.price}
                 </Card.Text>
-                <Button variant="primary" onClick={() => handleViewDetails(product.id)}>
-                  View Details
-                </Button>
-                <Button variant="warning" onClick={() => handleEditProduct(product)} className="ml-2">
-                  Edit
-                </Button>
-                <Button variant="danger" onClick={() => handleDeleteProduct(product.id)} className="ml-2">
-                  Delete
-                </Button>
+                <div className="d-flex justify-content-between mt-3">
+                  <Button variant="primary" size="sm" onClick={() => handleViewDetails(product.id)}>
+                    View
+                  </Button>
+                  <Button variant="danger" size="sm" onClick={() => handleDeleteProduct(product.id)}>
+                    Delete
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
 
+      <div className="d-flex justify-content-center mt-4">
+        <Button variant="success" onClick={() => setShowModal(true)} className="mb-3">
+          Add Product
+        </Button>
+      </div>
+
       <Modal show={showModal} onHide={resetForm}>
         <Modal.Header closeButton>
-          <Modal.Title>{editMode ? 'Edit Product' : 'Add New Product'}</Modal.Title>
+          <Modal.Title>Add New Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -203,7 +182,7 @@ const ProductAdmin = () => {
           <Button variant="secondary" onClick={resetForm}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAddOrUpdateProduct}>
+          <Button variant="primary" onClick={handleAddProduct}>
             Save Changes
           </Button>
         </Modal.Footer>

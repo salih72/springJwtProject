@@ -31,10 +31,11 @@ const LoginForm = () => {
         const decodedToken = jwtDecode(token);
         console.log(token);
         console.log(decodedToken);
+  
         if (decodedToken.role && decodedToken.role.includes('ADMIN')) {
-          navigate('/adminPanel');  // Admin rolü varsa adminPanel sayfasına yönlendir
+          navigate('/productsAdmin');  // Admin rolü varsa adminPanel sayfasına yönlendir
         } else {
-          setAlert({ show: true, message: 'You do not have permission to access the admin panel.', variant: 'warning' });
+          navigate('/products'); // Admin rolü yoksa products sayfasına yönlendir
         }
       })
       .catch(error => {
@@ -42,6 +43,7 @@ const LoginForm = () => {
         setAlert({ show: true, message: 'Login failed. Please try again.', variant: 'danger' });
       });
   };
+  
 
   const handleRegisterRedirect = () => {
     navigate('/register');
