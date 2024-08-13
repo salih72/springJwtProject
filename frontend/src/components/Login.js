@@ -33,7 +33,7 @@ const LoginForm = () => {
         console.log(decodedToken);
   
         if (decodedToken.role && decodedToken.role.includes('ADMIN')) {
-          navigate('/productsAdmin');  // Admin rolü varsa adminPanel sayfasına yönlendir
+          navigate('/adminPanel');  // Admin rolü varsa adminPanel sayfasına yönlendir
         } else {
           navigate('/products'); // Admin rolü yoksa products sayfasına yönlendir
         }

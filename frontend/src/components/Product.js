@@ -46,7 +46,6 @@ const Product = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  onClick={() => handleViewDetails(product.id)}
                   className="mt-3"
                   style={{ width: '100%' }}
                 >
