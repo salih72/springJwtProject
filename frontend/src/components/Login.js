@@ -13,6 +13,7 @@ const LoginForm = () => {
   const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
   const navigate = useNavigate();
 
+
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
@@ -32,9 +33,11 @@ const LoginForm = () => {
         console.log(token);
         console.log(decodedToken);
   
-        if (decodedToken.role && decodedToken.role.includes('ADMIN')) {
-          navigate('/adminPanel');  // Admin rolü varsa adminPanel sayfasına yönlendir
-        } else {
+        if (decodedToken.role === 'ROLE_ADMIN') {
+          console.log('Navigating to adminPanel');
+          navigate('/productsAdmin');  // Admin rolü varsa adminPanel sayfasına yönlendir,
+        } else if(decodedToken.role === 'ROLE_USER'){
+          console.log('Navigating to products');
           navigate('/products'); // Admin rolü yoksa products sayfasına yönlendir
         }
       })
@@ -46,7 +49,7 @@ const LoginForm = () => {
   
 
   const handleRegisterRedirect = () => {
-    navigate('/register');
+    navigate('/signup');
   };
 
   return (

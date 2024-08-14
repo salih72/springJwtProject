@@ -3,7 +3,7 @@ import { Card, Button, Container, Row, Col, Form, Modal } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const ProductAdmin = () => {
+const ProductsAdmin = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
@@ -191,4 +191,4 @@ const ProductAdmin = () => {
   );
 };
 
-export default ProductAdmin;
+export default ProductsAdmin;

@@ -1,16 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';  // Link bileşeni import edildi
 import styles from './AdminSidebar.module.css';  // CSS Modules kullanımı
 
-const Sidebar = () => {
+const AdminSidebar = () => {
   return (
     <div className={styles.sidebar}>
       <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/productsAdmin">Admin Panel</a></li>
+        <li><Link to="/dashboard">Dashboard</Link></li> {/* <a> yerine <Link> kullanıldı */}
+        <li><Link to="/products">Products</Link></li>
+        <li><Link to="/adminPanel">Admin Panel</Link></li>
       </ul>
     </div>
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

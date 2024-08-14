@@ -1,14 +1,14 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './AdminSidebar';
-import Navbar from './AdminNavbar';
+import AdminSidebar from './AdminSidebar';
+import AdminNavbar from './AdminNavbar';
 
-const Layout = () => {
+const AdminLayout = () => {
   return (
     <div className="layout">
-      <Navbar />
+      <AdminNavbar />
       <div className="layout-content">
-        <Sidebar />
+        <AdminSidebar />
         <main className="main-content">
           <Outlet />
         </main>
@@ -17,4 +17,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default AdminLayout;

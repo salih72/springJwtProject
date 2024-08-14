@@ -41,6 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/products").permitAll()
                         .requestMatchers("/adminPanel").hasRole(ADMIN.name())
                         .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())
+                        .requestMatchers("/productsAdmin").hasRole(ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
