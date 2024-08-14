@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cart from './Cart';  // Sepet bileşenini import ediyoruz
 
 const Product = () => {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,8 +19,17 @@ const Product = () => {
       });
   }, []);
 
-  const handleViewDetails = (id) => {
-    navigate(`/products/${id}`);
+  const handleAddToCart = (product) => {
+    setCart(prevCart => {
+      const existingProduct = prevCart.find(item => item.id === product.id);
+      if (existingProduct) {
+        return prevCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
   };
 
   return (
@@ -44,18 +55,22 @@ const Product = () => {
                   <strong>Price: </strong>${product.price}
                 </Card.Text>
                 <Button
-                  variant="primary"
+                  variant="success"
                   size="sm"
                   className="mt-3"
                   style={{ width: '100%' }}
+                  onClick={() => handleAddToCart(product)}
                 >
-                  View Details
+                  Ürünü Sepete Ekle
                 </Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
+      
+      {/* Sepet bileşenini sayfada göstermek için ekledik */}
+      <Cart cartItems={cart} />
     </Container>
   );
 };
