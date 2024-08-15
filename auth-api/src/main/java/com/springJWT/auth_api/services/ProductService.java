@@ -5,8 +5,8 @@ import com.springJWT.auth_api.entities.Product;
 import com.springJWT.auth_api.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,6 +14,10 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
 
     public List<ProductDto> getAllProducts() {
         return productRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
@@ -28,21 +32,19 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public ProductDto convertToDto(Product product) {
+    private ProductDto convertToDto(Product product) {
         ProductDto dto = new ProductDto();
-        dto.setId(product.getId());
+        dto.setId(product.getId());// Image alanını ekledik
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
-        dto.setImage(product.getImage()); // Image alanını ekledik
+        dto.setImage(product.getImage());
+
         return dto;
     }
 
-    public Product convertToEntity(ProductDto productDto) {
+    private Product convertToEntity(ProductDto productDto) {
         Product product = new Product();
-        product.setId(productDto.getId());
-        product.setName(productDto.getName());
-        product.setPrice(productDto.getPrice());
-        product.setImage(productDto.getImage()); // Image alanını ekledik
+        product.setId(productDto.getId());// Image alanını ekledik
         return product;
     }
 }

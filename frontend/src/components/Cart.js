@@ -22,8 +22,20 @@ const Cart = ({ cartItems }) => {
       alert("Siparişiniz alındı!");
     })
     .catch(error => {
-      console.error("Sipariş hatası:", error);
-      alert("Sipariş sırasında bir hata oluştu.");
+      console.error("Sipariş hatası:", error); // Hata detaylarını konsola yazdır
+      if (error.response) {
+        // Eğer hata yanıtı mevcutsa
+        if (error.response.status === 400) {
+          // Eğer Bad Request (400) hatası alındıysa, aktif sipariş uyarısı göster
+          alert("Aktif bir siparişiniz bulunmakta. Lütfen önce mevcut siparişinizi tamamlayın.");
+        } else {
+          // Diğer tüm hatalar için genel bir mesaj göster
+          alert(`Sipariş sırasında bir hata oluştu: ${error.response.data.message || error.message}`);
+        }
+      } else {
+        // Eğer response yoksa (örneğin, ağ hatası gibi durumlar)
+        alert("Bir ağ hatası oluştu. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.");
+      }
     });
   };
   
