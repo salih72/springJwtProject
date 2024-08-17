@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/products")
@@ -16,8 +18,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private KafkaMessageService kafkaMessageService;
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
@@ -26,16 +26,17 @@ public class ProductController {
 
     @PostMapping
     public ProductDto createProduct(@RequestBody ProductDto productDto) {
-        // DTO'yu entity'e dönüştür
-        Product product = productService.convertToEntity(productDto);
 
+        // DTO'yu entity'e dönüştür
+        Optional<Product> product = productService.getProductById(productDto.getId());
+        //toDo product null ise hata bas
+        // ön yüze 404 hata kodu dön.
+        //if
         // Entity'i kaydet
-        ProductDto savedProductDto = productService.saveProduct(product);
+        ProductDto savedProductDto = productService.saveProduct(product.orElse(null));
 
         // Kafka'ya mesaj gönder
-        kafkaMessageService.sendMessage("my-topic", savedProductDto);
-
-        return savedProductDto;
+        return savedProductDto; //toDo product save consumer'da yapılacak
     }
 
     @DeleteMapping("/{id}")

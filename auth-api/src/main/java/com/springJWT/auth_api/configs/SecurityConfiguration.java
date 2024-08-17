@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/products").permitAll()
-                        .requestMatchers("/api/orders").permitAll() // Herkese açık
+                        .requestMatchers("/api/orders").hasRole(USER.name())
                         .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())
                         .requestMatchers("/productsAdmin").hasRole(ADMIN.name())
                         .anyRequest().authenticated()

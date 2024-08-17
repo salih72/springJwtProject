@@ -1,5 +1,6 @@
 package com.springJWT.auth_api.entities;
 
+import com.springJWT.auth_api.controllers.models.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    //toDo user'ı dışardan alma token ile çöz
     @Column(nullable = false)
     private String customerName;
 
@@ -41,4 +43,8 @@ public class Order {
 
     @Column(nullable = false)
     private Double totalAmount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
 }
