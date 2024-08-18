@@ -11,7 +11,5 @@ public class OrderDto {
     private String customerAddress;
     private Double totalAmount;
     private List<ProductDto> products;
-
-
 }
 
