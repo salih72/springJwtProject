@@ -1,40 +1,63 @@
 import React, { useEffect, useState } from 'react';
+import OrderTable from './OrderTable';
 
 const Broadcast = () => {
-  const [messages, setMessages] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Establish a WebSocket connection to the SimpleSocketServer
-    const socket = new WebSocket('ws://localhost:8074'); // Replace with the correct WebSocket address
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('/api/orders/last20');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setOrders(data);
+        
+      } catch (error) {
+        
+        console.error('Failed to fetch orders:', error);
+      }
+    };
 
-    // Connection opened
+    fetchOrders();
+
+    const socket = new WebSocket('ws://localhost:8074');
+
     socket.onopen = () => {
       console.log('WebSocket connection opened');
     };
 
-    // Listen for messages
     socket.onmessage = (event) => {
-      console.log('Message received: ', event.data);
-      setMessages((prevMessages) => [...prevMessages, event.data]);
+      console.log('Received message: ', event.data);
+
+      try {
+        const newOrder = JSON.parse(event.data);
+        setOrders((prevOrders) => {
+          const updatedOrders = [newOrder, ...prevOrders].slice(0, 20);
+          return updatedOrders;
+        });
+      } catch (e) {
+        console.warn('Invalid JSON message received:', event.data);
+      }
     };
 
-    //toDo event.data.id id verir 
-
-    // Handle errors
     socket.onerror = (error) => {
       console.error('WebSocket error: ', error);
     };
 
-    // Connection closed
     socket.onclose = (event) => {
       if (event.wasClean) {
         console.log('WebSocket connection closed cleanly');
       } else {
         console.error('WebSocket connection closed unexpectedly');
+        setTimeout(() => {
+          console.log('Retrying WebSocket connection...');
+          fetchOrders();
+        }, 5000);
       }
     };
 
-    // Cleanup on component unmount
     return () => {
       socket.close();
     };
@@ -42,16 +65,10 @@ const Broadcast = () => {
 
   return (
     <div>
-      <h2>Received Messages</h2>
-      <ul>
-        {messages.map((message, index) => ( //message.id dediğimde o benim id im oluyor
-          <li key={index}>
-            <strong>Message {index + 1}:</strong> {message}
-          </li>
-        ))}
-      </ul>
+      <h2>Broadcast Orders</h2>
+      <OrderTable orders={orders} />
     </div>
   );
 };
-//data table components bak
+
 export default Broadcast;

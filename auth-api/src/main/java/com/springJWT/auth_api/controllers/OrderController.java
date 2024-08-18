@@ -75,6 +75,13 @@ public class OrderController {
         Order order = orderService.getOrderByUserId(id);
         return orderService.convertToDto(order);
     }
+
+    // Yeni endpoint: Son 20 siparişi döndür
+    @GetMapping("/last20")
+    public List<OrderDto> getLast20Orders() {
+        List<Order> last20Orders = orderService.getLast20Orders();
+        return last20Orders.stream().map(orderService::convertToDto).collect(Collectors.toList());
+    }
         //Alttaki if consumer a yazılacak
         /* Random random = new Random(10);
         int i = random.nextInt();

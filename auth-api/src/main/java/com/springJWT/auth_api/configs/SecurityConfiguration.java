@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/products").permitAll()
                         .requestMatchers("/api/orders").hasRole(USER.name())
+                        .requestMatchers("/api/orders/last20").permitAll()
                         .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())
                         .requestMatchers("/productsAdmin").hasRole(ADMIN.name())
                         .anyRequest().authenticated()

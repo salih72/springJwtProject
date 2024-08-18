@@ -10,6 +10,7 @@ import './layout/Layout.css';
 import './adminLayout/AdminSidebar.module.css';
 import './adminLayout/AdminLayout.css';
 import Broadcast from './components/Broadcast';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           <Route path="products" element={<Product />} />
           <Route path="productsAdmin" element={<ProductsAdmin />} />
           <Route path="/broadcast" element={<Broadcast />} />
+          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />
+
 
           
         </Route>      
@@ -33,6 +36,8 @@ function App() {
         </Route>
         
         <Route path="*" element={<Navigate to="/products" />} />
+        <Route path="/products" element={<ProtectedRoute><Layout /></ProtectedRoute>} />
+
       </Routes>
     </Router>
   );

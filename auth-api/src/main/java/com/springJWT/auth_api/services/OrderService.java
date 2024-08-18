@@ -33,6 +33,7 @@ public class OrderService {
         return orderRepository.findOrderByUserId(id).orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
+
     // Order to OrderDto conversion
     public OrderDto convertToDto(Order order) {
         OrderDto dto = new OrderDto();
@@ -51,4 +52,11 @@ public class OrderService {
         dto.setPrice(product.getPrice());
         return dto;
     }
+
+
+
+    public List<Order> getLast20Orders() {
+        return orderRepository.findLast20Orders();
+    }
+
 }

@@ -113,4 +113,19 @@
     background-color: #495057;
     font-weight: bold;
   }
+
+  .navbar-links .logout-button {
+    background-color: #ff4757;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar-links .logout-button:hover {
+    background-color: #e84118;
+  }
+  
   
