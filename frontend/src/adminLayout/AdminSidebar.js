@@ -9,6 +9,7 @@ const AdminSidebar = () => {
         <li><Link to="/dashboard">Dashboard</Link></li> {/* <a> yerine <Link> kullanıldı */}
         <li><Link to="/products">Products</Link></li>
         <li><Link to="/adminPanel">Admin Panel</Link></li>
+        <li><Link to="/broadcast">Broadcast</Link></li> {/* Broadcast sayfasına yönlendiren buton */}
       </ul>
     </div>
   );
