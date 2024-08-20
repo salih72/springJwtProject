@@ -24,19 +24,9 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ProductDto createProduct(@RequestBody ProductDto productDto) {
-
-        // DTO'yu entity'e dönüştür
-        Optional<Product> product = productService.getProductById(productDto.getId());
-        //toDo product null ise hata bas
-        // ön yüze 404 hata kodu dön.
-        //if
-        // Entity'i kaydet
-        ProductDto savedProductDto = productService.saveProduct(product.orElse(null));
-
-        // Kafka'ya mesaj gönder
-        return savedProductDto; //toDo product save consumer'da yapılacak
+        return productService.saveProduct(productDto); //toDo product save consumer'da yapılacak
     }
 
     @DeleteMapping("/{id}")

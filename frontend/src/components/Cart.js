@@ -1,42 +1,46 @@
 import React from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const Cart = ({ cartItems }) => {
   const totalCost = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    // Assuming you have a way to get the userId and customer details, possibly from your authentication token
+    const token = localStorage.getItem('token'); // Adjust based on how you're storing the token
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId; // Assuming userId is stored in the token
+  
     const orderData = {
-      products: cartItems.map(item => ({ id: item.id, name: item.name, price: item.price, quantity: item.quantity })),
-      totalAmount: totalCost,
-      customerAddress: "123 Main St" // Bu adresi kullanıcıdan dinamik olarak alabilirsiniz
+      userId: userId,
+      products: cartItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+      })),
+      totalAmount: totalCost.toFixed(2),
+      status: "PENDING",
     };
   
-    axios.post('/api/orders', orderData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}` // JWT token'ı burada ekleniyor
-      }
-    })
-    .then(response => {
-      console.log("Sipariş başarılı:", response.data);
-      alert("Siparişiniz alındı!");
-    })
-    .catch(error => {
-      console.error("Sipariş hatası:", error); // Hata detaylarını konsola yazdır
-      if (error.response) {
-        // Eğer hata yanıtı mevcutsa
-        if (error.response.status === 400) {
-          // Eğer Bad Request (400) hatası alındıysa, aktif sipariş uyarısı göster
-          alert("Aktif bir siparişiniz bulunmakta. Lütfen önce mevcut siparişinizi tamamlayın.");
-        } else {
-          // Diğer tüm hatalar için genel bir mesaj göster
-          alert(`Sipariş sırasında bir hata oluştu: ${error.response.data.message || error.message}`);
-        }
+    try {
+      const response = await axios.post('http://localhost:8081/api/orders/save', orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        // Handle successful order submission
+        console.log('Order successfully saved:', response.data);
+        // Optionally, redirect or clear the cart after successful checkout
       } else {
-        // Eğer response yoksa (örneğin, ağ hatası gibi durumlar)
-        alert("Bir ağ hatası oluştu. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.");
+        // Handle error cases
+        console.error('Failed to save order:', response.data);
       }
-    });
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    }
   };
   
 

@@ -27,13 +27,11 @@ public class Order {
     private User user;
 
     //toDo user'ı dışardan alma token ile çöz
-    @Column(nullable = false)
+    @Column
     private String customerName;
 
-    @Column(nullable = false)
-    private String customerAddress;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "order_products",
             joinColumns = @JoinColumn(name = "order_id"),

@@ -5,6 +5,8 @@ import com.springJWT.auth_api.entities.Product;
 import com.springJWT.auth_api.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,10 +22,24 @@ public class ProductService {
     }
 
     public List<ProductDto> getAllProducts() {
-        return productRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        List<ProductDto> productDtos = new ArrayList<>();
+
+        for(Product product : productRepository.findAll()){
+            productDtos.add(convertToDto(product));
+        }
+
+
+        return productDtos;
     }
 
-    public ProductDto saveProduct(Product product) {
+    public ProductDto saveProduct(ProductDto productDto) {
+        Product product = Product.builder()
+                .name(productDto.getName())
+                .price(productDto.getPrice())
+                .description("Bu bir description")
+                .image(productDto.getImage())
+                .build();
+
         Product savedProduct = productRepository.save(product);
         return convertToDto(savedProduct);
     }

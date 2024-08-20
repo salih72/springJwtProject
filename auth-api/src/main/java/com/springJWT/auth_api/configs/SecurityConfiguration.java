@@ -39,7 +39,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/products").permitAll()
-                        .requestMatchers("/api/orders").hasRole(USER.name())
+                        .requestMatchers("/api/products/**").hasRole(ADMIN.name())
+                        .requestMatchers("/api/orders").permitAll()
+                        .requestMatchers("/api/orders/**").permitAll()
+                        .requestMatchers("/api/save").permitAll()
                         .requestMatchers("/api/orders/last20").permitAll()
                         .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())
                         .requestMatchers("/productsAdmin").hasRole(ADMIN.name())

@@ -32,9 +32,10 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, int userId) {
         Map<String,Object> claims = new HashMap<>();
         claims.put("role",userDetails.getAuthorities().iterator().next().getAuthority());
+        claims.put("userId", userId);
         return generateToken(claims, userDetails);
     }
 

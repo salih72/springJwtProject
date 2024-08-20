@@ -1,21 +1,11 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 
-const OrderTable = ({ orders }) => {
+const OrderTable = ({ orders, onStatusToggle }) => {
     const columns = [
-        {
-            name: 'Order ID',
-            selector: row => row.id,
-            sortable: true,
-        },
         {
             name: 'Customer Name',
             selector: row => row.customerName,
-            sortable: true,
-        },
-        {
-            name: 'Customer Address',
-            selector: row => row.customerAddress,
             sortable: true,
         },
         {
@@ -27,20 +17,28 @@ const OrderTable = ({ orders }) => {
             name: 'Products',
             selector: row => row.products.map(product => product.name).join(", "),
             sortable: true,
-            // Stil ekleyerek metin kesmeyi engelle
             cell: row => (
                 <div style={{ whiteSpace: 'normal' }}>
                     {row.products.map(product => product.name).join(", ")}
                 </div>
             ),
         },
+        {
+            name: 'Status',
+            cell: row => (
+                <button onClick={() => onStatusToggle(row)}>
+                    {row.status === 'PENDING' ? 'Set as SUCCESS' : 'Set as PENDING'}
+                </button>
+            ),
+            sortable: true,
+        },
     ];
 
     return (
         <DataTable
-            title="Last 20 Orders"
+            title="All Orders"
             columns={columns}
-            data={orders}  // Verileri direkt olarak göster
+            data={orders}
             pagination
         />
     );

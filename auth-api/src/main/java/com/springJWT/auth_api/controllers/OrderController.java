@@ -9,12 +9,14 @@ import com.springJWT.auth_api.services.OrderService;
 import com.springJWT.auth_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/orders")
@@ -35,33 +37,13 @@ public class OrderController {
     private KafkaMessageService kafkaMessageService;
 
     @GetMapping
-    public List<OrderDto> getAllOrders() {
-        return orderService.getAllOrders().stream().map(orderService::convertToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @PostMapping
-    public OrderDto createOrder(@RequestBody Order order, @AuthenticationPrincipal UserDetails userDetails) {
-        String email = userDetails.getUsername();
-        User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Check if there is a pending order for the user
-        List<Order> pendingOrders = orderService.getAllOrders().stream()
-                .filter(o -> o.getUser().getId().equals(user.getId()) && o.getStatus() == Status.PENDING)
-                .collect(Collectors.toList());
-
-        if (!pendingOrders.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is an active pending order.");
-        }
-
-        order.setUser(user);
-        order.setCustomerName(user.getFullName());
-        order.setStatus(Status.PENDING); // Set the status to pending
-        Order savedOrder = orderService.saveOrder(order);
-
-        // Send the saved order as a message to the Kafka topic
-        kafkaMessageService.sendMessage("my-topic", orderService.convertToDto(savedOrder));
-
-        return orderService.convertToDto(savedOrder);
+    @PostMapping("/save")
+    public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto orderDto) {
+        return ResponseEntity.ok(orderService.saveOrder(orderDto));
     }
 
 
@@ -71,16 +53,15 @@ public class OrderController {
     }
 
     @GetMapping("/get/{id}")
-    public OrderDto getOrderByUserId(@PathVariable int id) {
-        Order order = orderService.getOrderByUserId(id);
-        return orderService.convertToDto(order);
+    public ResponseEntity<List<OrderDto>> getOrdersByUserId(@PathVariable int id) {
+        return ResponseEntity.ok(orderService.getOrdersByUserId(id));
     }
 
     // Yeni endpoint: Son 20 siparişi döndür
     @GetMapping("/last20")
     public List<OrderDto> getLast20Orders() {
-        List<Order> last20Orders = orderService.getLast20Orders();
-        return last20Orders.stream().map(orderService::convertToDto).collect(Collectors.toList());
+        List<OrderDto> last20Orders = orderService.getLast20Orders();
+        return last20Orders;
     }
         //Alttaki if consumer a yazılacak
         /* Random random = new Random(10);
