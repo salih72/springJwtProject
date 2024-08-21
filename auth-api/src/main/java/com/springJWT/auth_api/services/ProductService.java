@@ -5,11 +5,10 @@ import com.springJWT.auth_api.entities.Product;
 import com.springJWT.auth_api.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {
@@ -50,7 +49,7 @@ public class ProductService {
 
     private ProductDto convertToDto(Product product) {
         ProductDto dto = new ProductDto();
-        dto.setId(product.getId());// Image alanını ekledik
+        dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
         dto.setImage(product.getImage());
@@ -60,7 +59,7 @@ public class ProductService {
 
     private Product convertToEntity(ProductDto productDto) {
         Product product = new Product();
-        product.setId(productDto.getId());// Image alanını ekledik
+        product.setId(productDto.getId());
         return product;
     }
 }

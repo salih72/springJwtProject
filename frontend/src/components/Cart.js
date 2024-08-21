@@ -11,7 +11,7 @@ const Cart = ({ cartItems }) => {
     const token = localStorage.getItem('token'); // Adjust based on how you're storing the token
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userId; // Assuming userId is stored in the token
-  
+
     const orderData = {
       userId: userId,
       products: cartItems.map(item => ({

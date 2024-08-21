@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Entity
@@ -26,10 +25,9 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //toDo user'ı dışardan alma token ile çöz
+
     @Column
     private String customerName;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -45,4 +43,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+
+    //toDo user'ı dışardan alma token ile çöz 26. Satır
 }

@@ -13,16 +13,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 import static org.springframework.security.config.Customizer.withDefaults;
-
 import static com.springJWT.auth_api.entities.Role.ADMIN;
-import static com.springJWT.auth_api.entities.Role.USER;
-
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     public SecurityConfiguration(
             JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -42,6 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/products/**").hasRole(ADMIN.name())
                         .requestMatchers("/api/orders").permitAll()
                         .requestMatchers("/api/orders/**").permitAll()
+                        .requestMatchers("/api/orders/toggle-status/{orderId}").hasRole(ADMIN.name())
                         .requestMatchers("/api/save").permitAll()
                         .requestMatchers("/api/orders/last20").permitAll()
                         .requestMatchers("/adminPanel/**").hasRole(ADMIN.name())

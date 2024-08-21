@@ -1,13 +1,11 @@
 package com.springJWT.auth_api.repositories;
 
-import com.springJWT.auth_api.dtos.OrderDto;
+import com.springJWT.auth_api.controllers.models.Status;
 import com.springJWT.auth_api.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -19,8 +17,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     boolean existsByUserId(int id);
 
-
+    List<Order> findByUserIdAndStatus(int userId, Status status);
 }
+
+
 
 
 

@@ -5,29 +5,30 @@ const Broadcast = () => {
     const [orders, setOrders] = useState([]);
     const socketRef = useRef(null); // WebSocket bağlantısını tutmak için useRef kullanılıyor
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:8081/api/orders', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+    // fetchOrders fonksiyonunu useEffect dışında tanımlıyoruz
+    const fetchOrders = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:8081/api/orders', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("Fetched orders: ", data);
-                setOrders(data);
-            } catch (error) {
-                console.error('Failed to fetch orders:', error);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
 
+            const data = await response.json();
+            console.log("Fetched orders: ", data);
+            setOrders(data);
+        } catch (error) {
+            console.error('Failed to fetch orders:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchOrders(); // İlk başta fetchOrders çalıştırılır
 
         // WebSocket bağlantısını kur
@@ -80,10 +81,32 @@ const Broadcast = () => {
         };
     }, []);
 
+    const handleStatusToggle = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:8081/api/orders/updateStatus/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update order status');
+            }
+    
+            // Durum güncellendikten sonra orders state'ini tekrar fetch etmek mantıklı olabilir
+            fetchOrders();
+        } catch (error) {
+            console.error('Error updating order status:', error);
+        }
+    };
+    
     return (
         <div>
             <h2>Broadcast Orders</h2>
-            <OrderTable orders={orders} />
+            <OrderTable orders={orders} onStatusToggle={handleStatusToggle} />
         </div>
     );
 };

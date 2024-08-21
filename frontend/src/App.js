@@ -24,20 +24,15 @@ function App() {
           <Route path="products" element={<Product />} />
           <Route path="productsAdmin" element={<ProductsAdmin />} />
           <Route path="/broadcast" element={<Broadcast />} />
-          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />
-
-
-          
+          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />        
         </Route>      
 
         {/* Route for ProductsAdmin with AdminLayout */}
         <Route path="/productsAdmin" element={<AdminLayout />}>
           <Route index element={<ProductsAdmin />} />
         </Route>
-        
         <Route path="*" element={<Navigate to="/products" />} />
         <Route path="/products" element={<ProtectedRoute><Layout /></ProtectedRoute>} />
-
       </Routes>
     </Router>
   );

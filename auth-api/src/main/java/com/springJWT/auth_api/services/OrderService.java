@@ -9,16 +9,13 @@ import com.springJWT.auth_api.entities.User;
 import com.springJWT.auth_api.repositories.OrderRepository;
 import com.springJWT.auth_api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +44,6 @@ public class OrderService {
     public OrderDto saveOrder(OrderDto orderDto) {
         int userId = orderDto.getUserId();
 
-        // Check if the user has a pending order
         if (orderRepository.existsByUserId(userId)) {
             for (Order existingOrder : orderRepository.findByUserId(userId)) {
                 if (existingOrder.getStatus() == Status.PENDING) {
@@ -56,25 +52,18 @@ public class OrderService {
             }
         }
 
-        // Fetch user from the repository
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
         );
 
-
-
-
-        // Convert ProductDto list to Product entities
         List<Product> products = orderDto.getProducts().stream()
                 .map(this::convertToEntity)
                 .collect(Collectors.toList());
 
-        // Calculate the total amount for the order
         double totalAmount = products.stream()
                 .mapToDouble(Product::getPrice)
                 .sum();
 
-        // Set up and save the new order
         Order order = Order.builder()
                 .user(user)
                 .customerName(user.getFullName())
@@ -85,7 +74,6 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        // Convert saved order to DTO and send it to Kafka
         OrderDto currentOrderDto = convertToDto(savedOrder);
         kafkaMessageService.sendMessage("my-topic", currentOrderDto);
 
@@ -104,7 +92,6 @@ public class OrderService {
         return orderDtos;
     }
 
-    // Order to OrderDto conversion
     public OrderDto convertToDto(Order order) {
         OrderDto dto = new OrderDto();
         dto.setUserId(order.getUser().getId());
@@ -116,9 +103,7 @@ public class OrderService {
             ProductDto productDto = convertToProductDto(product);
             productDtos.add(productDto);
         }
-
         dto.setProducts(productDtos);
-
         return dto;
     }
 
@@ -146,4 +131,17 @@ public class OrderService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void updatePendingOrdersToSuccess(int userId) {
+        List<Order> pendingOrders = orderRepository.findByUserIdAndStatus(userId, Status.PENDING);
+
+        for (Order order : pendingOrders) {
+            order.setStatus(Status.SUCCESS);
+        }
+
+        orderRepository.saveAll(pendingOrders);
+    }
+
+
 }

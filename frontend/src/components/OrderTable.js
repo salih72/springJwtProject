@@ -10,7 +10,7 @@ const OrderTable = ({ orders, onStatusToggle }) => {
         },
         {
             name: 'Total Amount',
-            selector: row => row.totalAmount,
+            selector: row => `$${row.totalAmount.toFixed(2)}`,
             sortable: true,
         },
         {
@@ -26,8 +26,11 @@ const OrderTable = ({ orders, onStatusToggle }) => {
         {
             name: 'Status',
             cell: row => (
-                <button onClick={() => onStatusToggle(row)}>
-                    {row.status === 'PENDING' ? 'Set as SUCCESS' : 'Set as PENDING'}
+                <button
+                    onClick={() => onStatusToggle(row.userId)} 
+                    className={`btn btn-sm ${row.status === 'PENDING' ? 'btn-warning' : 'btn-success'}`}
+                >
+                    {row.status === 'PENDING' ? 'Set as PENDING' : 'Set as SUCCESS'}
                 </button>
             ),
             sortable: true,
@@ -40,6 +43,9 @@ const OrderTable = ({ orders, onStatusToggle }) => {
             columns={columns}
             data={orders}
             pagination
+            highlightOnHover
+            striped
+            responsive
         />
     );
 };

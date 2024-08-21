@@ -1,32 +1,17 @@
 package com.springJWT.auth_api.controllers;
 
-import com.springJWT.auth_api.controllers.models.Status;
 import com.springJWT.auth_api.dtos.OrderDto;
-import com.springJWT.auth_api.entities.Order;
-import com.springJWT.auth_api.entities.User;
 import com.springJWT.auth_api.services.KafkaMessageService;
 import com.springJWT.auth_api.services.OrderService;
 import com.springJWT.auth_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-    //toDo önyüzden istek gelince status default olarak 1 olacak
-    //toDo statusler enum olarak tanımlanacak
-    //toDo 1 = pending, 2 = failed, 3 = success
-    //CreateOrder metodu tetiklendiğinde orderın statusunu 1 olarak db'ye kayıt et
-    //kayıt ettiğin kaydı kafka ile produce et
-    //
     @Autowired
     private OrderService orderService;
 
@@ -63,15 +48,28 @@ public class OrderController {
         List<OrderDto> last20Orders = orderService.getLast20Orders();
         return last20Orders;
     }
-        //Alttaki if consumer a yazılacak
-        /* Random random = new Random(10);
+
+    @PutMapping("/updateStatus/{userId}")
+    public ResponseEntity<Void> updatePendingOrdersToSuccess(@PathVariable int userId) {
+        orderService.updatePendingOrdersToSuccess(userId);
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
+
+    //toDo önyüzden istek gelince status default olarak 1 olacak
+    //toDo statusler enum olarak tanımlanacak
+    //toDo 1 = pending, 2 = failed, 3 = success
+    //toDo CreateOrder metodu tetiklendiğinde orderın statusunu 1 olarak db'ye kayıt et
+    //TODO kayıt ettiğin kaydı kafka ile produce et
+    //TODO Alttaki if consumer a yazılacak
+    /*TODO Random random = new Random(10);
         int i = random.nextInt();
         if (
-                i == 1 //toDo ise failed
+             i == 1 // ise failed
         ) {
-
         }
         */
-
-
 }
