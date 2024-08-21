@@ -61,7 +61,7 @@ const ProductsAdmin = () => {
       },
     };
   
-    axios.post('/api/products/save', newProduct, config)
+    axios.post('/api/products', newProduct, config)
       .then(response => {
         setProducts([...products, response.data]);
         resetForm();

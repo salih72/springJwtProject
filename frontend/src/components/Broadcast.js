@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import OrderTable from './OrderTable';
+import { useNavigate } from 'react-router-dom'; // Yönlendirme için useNavigate hook'u
 
 const Broadcast = () => {
     const [orders, setOrders] = useState([]);
     const socketRef = useRef(null); // WebSocket bağlantısını tutmak için useRef kullanılıyor
+    const navigate = useNavigate(); // useNavigate hook'u kullanılıyor
 
-    // fetchOrders fonksiyonunu useEffect dışında tanımlıyoruz
     const fetchOrders = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -102,11 +103,30 @@ const Broadcast = () => {
             console.error('Error updating order status:', error);
         }
     };
-    
+
+    const navigateToAdminProducts = () => {
+        navigate('/productsAdmin'); // adminProducts sayfasına yönlendirme
+    };
+
     return (
-        <div>
-            <h2>Broadcast Orders</h2>
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
             <OrderTable orders={orders} onStatusToggle={handleStatusToggle} />
+            <button 
+                onClick={navigateToAdminProducts} 
+                style={{ 
+                    position: 'absolute', 
+                    bottom: '20px', 
+                    right: '20px', 
+                    padding: '10px 20px', 
+                    backgroundColor: '#007bff', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: '5px', 
+                    cursor: 'pointer' 
+                }}
+            >
+                Prodcuts
+            </button>
         </div>
     );
 };

@@ -3,6 +3,7 @@ package com.springJWT.auth_api.services;
 import com.springJWT.auth_api.dtos.ProductDto;
 import com.springJWT.auth_api.entities.Product;
 import com.springJWT.auth_api.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -44,8 +45,15 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (!productOptional.isPresent()) {
+            throw new EntityNotFoundException("Product with ID " + id + " not found.");
+        }
+
         productRepository.deleteById(id);
     }
+
 
     private ProductDto convertToDto(Product product) {
         ProductDto dto = new ProductDto();

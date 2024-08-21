@@ -17,22 +17,27 @@ function App() {
     <Router>
       <Routes>
 
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Product />} /> {/* ProductAdmin yerine Product */}
+        <Route>
           <Route path="login" element={<LoginForm />} />
           <Route path="signup" element={<RegisterForm />} />
+          <Route path="*" element={<Navigate to="/products" />} />
+        </Route>
+
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Product />} /> {/* ProductAdmin yerine Product */}
           <Route path="products" element={<Product />} />
-          <Route path="productsAdmin" element={<ProductsAdmin />} />
-          <Route path="/broadcast" element={<Broadcast />} />
-          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />        
+          <Route path="/products" element={<ProtectedRoute><Layout /></ProtectedRoute>} />
         </Route>      
 
         {/* Route for ProductsAdmin with AdminLayout */}
         <Route path="/productsAdmin" element={<AdminLayout />}>
           <Route index element={<ProductsAdmin />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/products" />} />
-        <Route path="/products" element={<ProtectedRoute><Layout /></ProtectedRoute>} />
+          </Route>
+          <Route path="/broadcast" element={<Broadcast />} />
+          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />   
+                  
+   
+
       </Routes>
     </Router>
   );
