@@ -97,6 +97,7 @@ public class OrderService {
         dto.setUserId(order.getUser().getId());
         dto.setCustomerName(order.getCustomerName());
         dto.setTotalAmount(order.getTotalAmount());
+        dto.setStatus(order.getStatus());
 
         List<ProductDto> productDtos = new ArrayList<>();
         for(Product product : order.getProducts()){
@@ -133,15 +134,20 @@ public class OrderService {
     }
 
     @Transactional
-    public void updatePendingOrdersToSuccess(int userId) {
-        List<Order> pendingOrders = orderRepository.findByUserIdAndStatus(userId, Status.PENDING);
+    public void toggleOrderStatus(int userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
 
-        for (Order order : pendingOrders) {
-            order.setStatus(Status.SUCCESS);
+        for (Order order : orders) {
+            if (order.getStatus() == Status.PENDING) {
+                order.setStatus(Status.SUCCESS);
+            } else if (order.getStatus() == Status.SUCCESS) {
+                order.setStatus(Status.PENDING);
+            }
         }
 
-        orderRepository.saveAll(pendingOrders);
+        orderRepository.saveAll(orders);
     }
+
 
 
 }

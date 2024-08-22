@@ -50,21 +50,17 @@ public class OrderController {
     }
 
     @PutMapping("/updateStatus/{userId}")
-    public ResponseEntity<Void> updatePendingOrdersToSuccess(@PathVariable int userId) {
-        orderService.updatePendingOrdersToSuccess(userId);
+    public ResponseEntity<Void> toggleOrderStatus(@PathVariable int userId) {
+        orderService.toggleOrderStatus(userId);
         return ResponseEntity.ok().build();
     }
-
-
-
-
-
-    //toDo önyüzden istek gelince status default olarak 1 olacak
-    //toDo statusler enum olarak tanımlanacak
-    //toDo 1 = pending, 2 = failed, 3 = success
-    //toDo CreateOrder metodu tetiklendiğinde orderın statusunu 1 olarak db'ye kayıt et
-    //TODO kayıt ettiğin kaydı kafka ile produce et
-    //TODO Alttaki if consumer a yazılacak
+}
+//toDo önyüzden istek gelince status default olarak 1 olacak
+//toDo statusler enum olarak tanımlanacak
+//toDo 1 = pending, 2 = failed, 3 = success
+//toDo CreateOrder metodu tetiklendiğinde orderın statusunu 1 olarak db'ye kayıt et
+//TODO kayıt ettiğin kaydı kafka ile produce et
+//TODO Alttaki if consumer a yazılacak
     /*TODO Random random = new Random(10);
         int i = random.nextInt();
         if (
@@ -72,4 +68,3 @@ public class OrderController {
         ) {
         }
         */
-}

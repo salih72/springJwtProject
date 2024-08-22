@@ -33,7 +33,7 @@ const Broadcast = () => {
         fetchOrders(); // İlk başta fetchOrders çalıştırılır
 
         // WebSocket bağlantısını kur
-        socketRef.current = new WebSocket('ws://localhost:8074');
+        socketRef.current = new WebSocket('ws://localhost:8026');
 
         socketRef.current.onopen = () => {
             console.log('WebSocket connection opened');
@@ -69,10 +69,10 @@ const Broadcast = () => {
             if (event.wasClean) {
                 console.log('WebSocket connection closed cleanly');
             } else {
-                console.error('WebSocket connection closed unexpectedly');
+                console.log('WebSocket connection closed unexpectedly');
                 setTimeout(() => {
                     console.log('Retrying WebSocket connection...');
-                    socketRef.current = new WebSocket('ws://localhost:8074');
+                    socketRef.current = new WebSocket('ws://localhost:8026');
                 }, 5000);
             }
         };
@@ -125,7 +125,7 @@ const Broadcast = () => {
                     cursor: 'pointer' 
                 }}
             >
-                Prodcuts
+                Admin Products
             </button>
         </div>
     );

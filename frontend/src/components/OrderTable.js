@@ -29,16 +29,17 @@ const OrderTable = ({ orders, onStatusToggle }) => {
             name: 'Status',
             cell: row => (
                 <button
-                    onClick={() => onStatusToggle(row.userId)} 
+                    onClick={() => onStatusToggle(row.userId, row.status)} 
                     className={`btn btn-sm ${row.status === 'PENDING' ? 'btn-warning' : 'btn-success'}`}
                     style={{ margin: '5px', padding: '5px 10px' }}
                 >
-                    {row.status === 'PENDING' ? 'SUCCESS' : 'PENDING'}
+                    {row.status}
                 </button>
             ),
             sortable: true,
             style: { padding: '10px' },
-        },
+        }        
+        
     ];
 
     return (
