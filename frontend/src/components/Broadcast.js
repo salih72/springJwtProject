@@ -22,7 +22,6 @@ const Broadcast = () => {
             }
 
             const data = await response.json();
-            console.log("Fetched orders: ", data);
             setOrders(data);
         } catch (error) {
             console.error('Failed to fetch orders:', error);
@@ -109,12 +108,12 @@ const Broadcast = () => {
     };
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: '60px' }}>
             <OrderTable orders={orders} onStatusToggle={handleStatusToggle} />
             <button 
                 onClick={navigateToAdminProducts} 
                 style={{ 
-                    position: 'absolute', 
+                    position: 'fixed', 
                     bottom: '20px', 
                     right: '20px', 
                     padding: '10px 20px', 

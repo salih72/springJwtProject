@@ -8,7 +8,8 @@ import java.util.List;
 public class OrderDto {
     private int userId;
     private String customerName;
-    private List<ProductDto> products;
     private Double totalAmount;
     private Status status;
+    //private String customerAddress;
+    private List<ProductDto> products;
 }

@@ -38,15 +38,17 @@ const OrderTable = ({ orders, onStatusToggle }) => {
             ),
             sortable: true,
             style: { padding: '10px' },
-        }        
-        
+        }
     ];
+
+    // Reverse the orders array before passing it to DataTable
+    const reversedOrders = [...orders].reverse();
 
     return (
         <DataTable
             title="All Orders"
             columns={columns}
-            data={orders}
+            data={reversedOrders}
             pagination
             highlightOnHover
             striped

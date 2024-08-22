@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; // Import correctly, without destructuring
 
 const Cart = ({ cartItems }) => {
   const totalCost = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -23,7 +23,7 @@ const Cart = ({ cartItems }) => {
       totalAmount: totalCost.toFixed(2),
       status: "PENDING",
     };
-  
+
     try {
       const response = await axios.post('http://localhost:8081/api/orders/save', orderData, {
         headers: {
@@ -33,6 +33,8 @@ const Cart = ({ cartItems }) => {
       if (response.status === 200) {
         // Handle successful order submission
         console.log('Order successfully saved:', response.data);
+        // Show success notification to the user
+        alert('Siparişiniz onaylandı');
         // Optionally, redirect or clear the cart after successful checkout
       } else {
         // Handle error cases
@@ -42,7 +44,6 @@ const Cart = ({ cartItems }) => {
       console.error('Error during checkout:', error);
     }
   };
-  
 
   return (
     <Container className="mt-5">

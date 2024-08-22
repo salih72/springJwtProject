@@ -25,9 +25,11 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
     @Column
     private String customerName;
+
+    //@Column
+    //private String customerAddress;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -44,5 +46,7 @@ public class Order {
     @Column(nullable = false)
     private Status status;
 
-    //toDo user'ı dışardan alma token ile çöz 26. Satır
 }
+
+
+//toDo user'ı dışardan alma token ile çöz 26. Satır

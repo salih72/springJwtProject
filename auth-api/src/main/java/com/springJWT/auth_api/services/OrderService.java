@@ -71,6 +71,7 @@ public class OrderService {
                 .totalAmount(orderDto.getTotalAmount())
                 .status(Status.PENDING)
                 .build();
+        //.customerAddress(user.getCustomerAddress())
 
         Order savedOrder = orderRepository.save(order);
 
@@ -98,6 +99,7 @@ public class OrderService {
         dto.setCustomerName(order.getCustomerName());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
+        //dto.setCustomerAddress(order.getCustomerAddress());
 
         List<ProductDto> productDtos = new ArrayList<>();
         for(Product product : order.getProducts()){

@@ -8,6 +8,8 @@ public class RegisterUserDto {
 
     private String fullName;
 
+    private String customerAddress;
+
 
     public String getEmail() {
         return email;
@@ -17,12 +19,22 @@ public class RegisterUserDto {
         return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getFullName() {
         return fullName;
+    }
+
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
