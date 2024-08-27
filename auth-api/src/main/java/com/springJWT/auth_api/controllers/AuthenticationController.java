@@ -6,7 +6,9 @@ import com.springJWT.auth_api.dtos.RegisterUserDto;
 import com.springJWT.auth_api.responses.LoginResponse;
 import com.springJWT.auth_api.services.AuthenticationService;
 import com.springJWT.auth_api.services.JwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +38,11 @@ public class AuthenticationController {
         String jwtToken = jwtService.generateToken(authenticatedUser, authenticatedUser.getId());
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully logged out");
     }
 }

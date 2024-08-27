@@ -28,17 +28,17 @@ const LoginForm = () => {
         const token = response.data.token;
         localStorage.setItem('token', token);
         
-        // Token'ı decode et ve rol kontrolü yap
+       
         const decodedToken = jwtDecode(token);
         console.log(token);
         console.log(decodedToken);
   
         if (decodedToken.role === 'ROLE_ADMIN') {
           console.log('Navigating to adminPanel');
-          navigate('/productsAdmin');  // Admin rolü varsa adminPanel sayfasına yönlendir,
+          navigate('/productsAdmin');
         } else if(decodedToken.role === 'ROLE_USER'){
           console.log('Navigating to products');
-          navigate('/products'); // Admin rolü yoksa products sayfasına yönlendir
+          navigate('/products');
         }
       })
       .catch(error => {

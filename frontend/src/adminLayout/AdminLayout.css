@@ -1,131 +1,215 @@
-/* Genel Layout Stilleri */
-.layout {
-    display: flex;
+/* Genel navbar stilleri */
+.admin-navbar {
+  background-color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e04242;
+  position: fixed; /* Sticky yerine fixed kullanıldı */
+  top: 0;
+  left: 0;
+  width: 100%; /* Genişlik tam sayfa olacak şekilde ayarlandı */
+  z-index: 1000;
+  height: 80px; /* Navbar yüksekliği */
+}
+
+/* Marka ismi (sol köşe) */
+.admin-navbar-brand a {
+  color: #ecf0f1;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.admin-navbar-brand a:hover {
+  color: #1abc9c;
+}
+
+/* Navbar linkleri */
+.admin-navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.admin-navbar-links a {
+  color: #ecf0f1;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.admin-navbar-links a:hover {
+  background-color: #1abc9c;
+  color: #ffffff;
+}
+
+/* Logout butonu */
+.logout-button {
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Responsive tasarım için */
+@media (max-width: 768px) {
+  .admin-navbar-links {
     flex-direction: column;
-    height: 100vh;
-  }
-  
-  .layout-content {
-    display: flex;
-    flex: 1;
-    overflow: hidden; /* Taşmaları önler */
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 1.5rem;
-    background-color: #f8f9fa;
-    overflow-y: auto;
-  }
-  
-  .navbar {
-    background-color: #343a40;
-    color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-brand {
-    font-size: 1.8rem; /* Yazı boyutunu büyüt */
-    font-weight: bold; /* Kalın yazı */
-    color: #ffffff;
-    text-transform: uppercase; /* Büyük harf yap */
-    letter-spacing: 0.1rem; /* Harf aralığını aç */
-  }
-  
-  .navbar-brand a {
-    text-decoration: none; /* Link alt çizgisini kaldır */
-    color: inherit; /* Parent color'ı miras al */
-    transition: color 0.3s ease, transform 0.3s ease; /* Hover geçiş efekti */
-  }
-  
-  .navbar-brand a:hover {
-    color: #ffdd57; /* Hover durumunda altın sarısı renk */
-    transform: scale(1.1); /* Hover durumunda hafif büyüme efekti */
-  }
-  
-  
-  .navbar-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
     gap: 1rem;
   }
-  
-  .navbar-links li {
-    display: inline;
-  }
-  
-  .navbar-links a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .navbar-links a:hover {
-    background-color: #495057;
-  }
-  
-  /* Sidebar Stilleri */
-  .sidebar {
-    width: 220px;
-    background-color: #343a40;
-    color: white;
-    display: flex;
-    flex-direction: column;
+
+  .admin-navbar {
     padding: 1rem;
-    height: 100%;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
   }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    margin-bottom: 1rem;
-  }
-  
-  .sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .sidebar a:hover {
-    background-color: #495057;
-  }
-  
-  /* Sidebar ve Navbar'da Hover ve Aktif Durumlar */
-  .sidebar a.active, .navbar-links a.active {
-    background-color: #495057;
-    font-weight: bold;
+}
+
+/* Sidebar için sabit genişlik */
+.admin-sidebar {
+  background-color: rgb(125, 55, 55); /* Koyu arka plan rengi */
+  width: 250px; /* Sidebar genişliği */
+  height: calc(100vh - 64px); /* Tüm sayfa yüksekliği - Navbar yüksekliği */
+  position: fixed;
+  top: 64px; /* Navbar yüksekliğinden sonra başla */
+  left: 0;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease, background-color 0.3s ease; /* Genişlik ve arka plan rengi geçiş efekti */
+}
+
+.admin-sidebar:hover {
+  width: 280px; /* Hover durumunda sidebar genişliğini artır */
+  background-color: #16222a; /* Hover durumunda arka plan rengini değiştir */
+}
+
+/* Sidebar başlık stili */
+.admin-sidebar-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Sidebar'daki liste stilleri */
+.admin-sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar ul li {
+  margin-bottom: 1.5rem;
+}
+
+/* Linklerin genel stili */
+.admin-sidebar ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, padding-left 0.3s ease, color 0.3s ease;
+}
+
+.admin-sidebar ul li a:hover {
+  background-color: #1abc9c;
+  padding-left: 1.5rem;
+  color: #ffffff; /* Hover durumunda metin rengini değiştir */
+}
+
+/* Aktif link için stil */
+.admin-sidebar ul li a.active {
+  background-color: #1abc9c;
+  color: #ffffff;
+  font-weight: 600;
+  padding-left: 1.5rem;
+}
+
+/* Sidebar alt bilgi (footer) stili */
+.admin-sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #495057; /* Üstünde ince bir çizgi */
+  text-align: center;
+  font-size: 0.875rem;
+  color: #adb5bd;
+}
+
+.admin-sidebar-footer a {
+  color: #adb5bd;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.admin-sidebar-footer a:hover {
+  color: #ffffff;
+}
+
+/* Responsive tasarım için */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
   }
 
-  .navbar-links .logout-button {
-    background-color: #ff4757;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  .admin-sidebar ul li a {
+    padding: 1rem;
+    text-align: center;
   }
-  
-  .navbar-links .logout-button:hover {
-    background-color: #e84118;
+
+  .admin-main-content {
+    margin-left: 0;
+    padding: 1rem;
   }
-  
-  
+}
+
+/* Ana içerik alanı */
+.admin-main-content {
+  margin-left: 250px; /* Sidebar genişliğini içerik alanından çıkar */
+  padding: 2rem;
+  background-color: #f5f6fa;
+  transition: margin-left 0.3s ease; /* Geçiş efekti */
+}
+
+/* Kart container ayarı */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  width: 100%; /* Flex ile birlikte kullanıldığında tam genişlik almasını sağlar */
+  max-width: 220px; /* Kartların max genişliği */
+  margin-bottom: 1rem;
+}

@@ -42,29 +42,15 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByUserId(id));
     }
 
-    // Yeni endpoint: Son 20 siparişi döndür
     @GetMapping("/last20")
     public List<OrderDto> getLast20Orders() {
         List<OrderDto> last20Orders = orderService.getLast20Orders();
         return last20Orders;
     }
 
-    @PutMapping("/updateStatus/{userId}")
-    public ResponseEntity<Void> toggleOrderStatus(@PathVariable int userId) {
-        orderService.toggleOrderStatus(userId);
+    @PutMapping("/updateStatus/{userId}/{id}")
+    public ResponseEntity<Void> toggleOrderStatus(@PathVariable int userId, @PathVariable long id) {
+        orderService.toggleOrderStatus(userId,id);
         return ResponseEntity.ok().build();
     }
 }
-//toDo önyüzden istek gelince status default olarak 1 olacak
-//toDo statusler enum olarak tanımlanacak
-//toDo 1 = pending, 2 = failed, 3 = success
-//toDo CreateOrder metodu tetiklendiğinde orderın statusunu 1 olarak db'ye kayıt et
-//TODO kayıt ettiğin kaydı kafka ile produce et
-//TODO Alttaki if consumer a yazılacak
-    /*TODO Random random = new Random(10);
-        int i = random.nextInt();
-        if (
-             i == 1 // ise failed
-        ) {
-        }
-        */

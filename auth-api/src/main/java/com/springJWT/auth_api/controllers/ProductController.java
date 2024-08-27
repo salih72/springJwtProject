@@ -20,7 +20,7 @@ public class ProductController {
 
     @PostMapping("/save")
     public ProductDto createProduct(@RequestBody ProductDto productDto) {
-        return productService.saveProduct(productDto); //toDo product save consumer'da yapılacak
+        return productService.saveProduct(productDto);
     }
 
     @DeleteMapping("/{id}")

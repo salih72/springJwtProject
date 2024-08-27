@@ -7,7 +7,6 @@ import Layout from './layout/Layout';
 import AdminLayout from './adminLayout/AdminLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './layout/Layout.css';
-import './adminLayout/AdminSidebar.module.css';
 import './adminLayout/AdminLayout.css';
 import Broadcast from './components/Broadcast';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -16,28 +15,25 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Başlangıçta "/" pathine geldiğinde "/login"e yönlendirme yap */}
+        <Route path="/" element={<Navigate to="/login" />} />
 
-        <Route>
-          <Route path="login" element={<LoginForm />} />
-          <Route path="signup" element={<RegisterForm />} />
-          <Route path="*" element={<Navigate to="/products" />} />
-        </Route>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<RegisterForm />} />
 
         <Route path="/" element={<Layout />}>
-          <Route index element={<Product />} /> {/* ProductAdmin yerine Product */}
           <Route path="products" element={<Product />} />
           <Route path="/products" element={<ProtectedRoute><Layout /></ProtectedRoute>} />
         </Route>      
 
-        {/* Route for ProductsAdmin with AdminLayout */}
-        <Route path="/productsAdmin" element={<AdminLayout />}>
+        <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route index element={<ProductsAdmin />} />
-          </Route>
-          <Route path="/broadcast" element={<Broadcast />} />
-          <Route path="/productsAdmin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>} />   
-                  
-   
+        </Route>
 
+        <Route path="/broadcast" element={<Broadcast />} />
+        
+        {/* Tanımlanmamış herhangi bir path için yönlendirme yapılır */}
+        <Route path="*" element={<Navigate to="/auth/login" />} />
       </Routes>
     </Router>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cart from './Cart';  // Sepet bileşenini import ediyoruz
+import Cart from './Cart';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -29,6 +29,12 @@ const Product = () => {
       } else {
         return [...prevCart, { ...product, quantity: 1 }];
       }
+    });
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCart(prevCart => {
+      return prevCart.filter(item => item.id !== productId);
     });
   };
 
@@ -63,14 +69,22 @@ const Product = () => {
                 >
                   Ürünü Sepete Ekle
                 </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="mt-2"
+                  style={{ width: '100%' }}
+                  onClick={() => handleRemoveFromCart(product.id)}
+                >
+                  Çıkar
+                </Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
       
-      {/* Sepet bileşenini sayfada göstermek için ekledik */}
-      <Cart cartItems={cart} />
+      <Cart cartItems={cart} setCartItems={setCart} />
     </Container>
   );
 };

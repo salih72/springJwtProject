@@ -28,8 +28,10 @@ const OrderTable = ({ orders, onStatusToggle }) => {
         {
             name: 'Status',
             cell: row => (
+                
                 <button
-                    onClick={() => onStatusToggle(row.userId, row.status)} 
+                    onClick={() => onStatusToggle(row.userId, row.id)} 
+                    
                     className={`btn btn-sm ${row.status === 'PENDING' ? 'btn-warning' : 'btn-success'}`}
                     style={{ margin: '5px', padding: '5px 10px' }}
                 >
@@ -41,14 +43,12 @@ const OrderTable = ({ orders, onStatusToggle }) => {
         }
     ];
 
-    // Reverse the orders array before passing it to DataTable
-    const reversedOrders = [...orders].reverse();
 
     return (
         <DataTable
             title="All Orders"
             columns={columns}
-            data={reversedOrders}
+            data={orders}
             pagination
             highlightOnHover
             striped
@@ -56,18 +56,18 @@ const OrderTable = ({ orders, onStatusToggle }) => {
             customStyles={{
                 rows: {
                     style: {
-                        minHeight: '72px', // override the row height
+                        minHeight: '72px', 
                     },
                 },
                 headCells: {
                     style: {
-                        paddingLeft: '8px', // override the cell padding for head cells
+                        paddingLeft: '8px',
                         paddingRight: '8px',
                     },
                 },
                 cells: {
                     style: {
-                        paddingLeft: '8px', // override the cell padding for data cells
+                        paddingLeft: '8px',
                         paddingRight: '8px',
                     },
                 },

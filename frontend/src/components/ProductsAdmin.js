@@ -61,7 +61,7 @@ const ProductsAdmin = () => {
       },
     };
   
-    axios.post('/api/products', newProduct, config)
+    axios.post('/api/products/save', newProduct, config)
       .then(response => {
         setProducts([...products, response.data]);
         resetForm();
@@ -88,9 +88,6 @@ const ProductsAdmin = () => {
     setShowModal(false);
   };
 
-  const handleViewDetails = (id) => {
-    navigate(`/products/${id}`);
-  };
 
   return (
     <Container className="mt-5">
@@ -111,9 +108,6 @@ const ProductsAdmin = () => {
                   <strong>Price: </strong>${product.price}
                 </Card.Text>
                 <div className="d-flex justify-content-between mt-3">
-                  <Button variant="primary" size="sm" onClick={() => handleViewDetails(product.id)}>
-                    View
-                  </Button>
                   <Button variant="danger" size="sm" onClick={() => handleDeleteProduct(product.id)}>
                     Delete
                   </Button>

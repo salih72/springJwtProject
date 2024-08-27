@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Import correctly, without destructuring
+import { jwtDecode } from 'jwt-decode';
+import './Cart.css'; // Yeni CSS'i yüklemek için
 
 const Cart = ({ cartItems }) => {
   const totalCost = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleCheckout = async () => {
-    // Assuming you have a way to get the userId and customer details, possibly from your authentication token
-    const token = localStorage.getItem('token'); // Adjust based on how you're storing the token
+    const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
-    const userId = decodedToken.userId; // Assuming userId is stored in the token
+    const userId = decodedToken.userId;
 
     const orderData = {
       userId: userId,
@@ -30,23 +30,23 @@ const Cart = ({ cartItems }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.status === 200) {
-        // Handle successful order submission
         console.log('Order successfully saved:', response.data);
-        // Show success notification to the user
         alert('Siparişiniz onaylandı');
-        // Optionally, redirect or clear the cart after successful checkout
-      } else {
-        // Handle error cases
-        console.error('Failed to save order:', response.data);
       }
     } catch (error) {
-      console.error('Error during checkout:', error);
+      if (error.response && error.response.status === 403) {
+        alert('Hazırlanma aşamasında bir siparişiniz var.');
+      } else {
+        console.error('Error during checkout:', error);
+        alert('Sipariş sırasında bir hata oluştu.');
+      }
     }
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="cart-container">
       <h3>Sepetiniz</h3>
       {cartItems.length === 0 ? (
         <p>Sepetinizde ürün bulunmuyor.</p>

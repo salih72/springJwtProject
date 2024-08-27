@@ -1,0 +1,72 @@
+/* Sepet Container Stili */
+.cart-container {
+    margin-top: 3rem;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Başlık Stili */
+  .cart-container h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  /* Tablo Başlıkları */
+  .cart-container th {
+    background-color: #343a40;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  /* Tablo Hücreleri */
+  .cart-container td {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #495057;
+    vertical-align: middle;
+  }
+  
+  /* Toplam Ücret Stili */
+  .cart-container h4 {
+    text-align: right;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+  }
+  
+  /* Satın Al Butonu */
+  .cart-container .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    background-color: #28a745;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .cart-container .btn-primary:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  
+  /* Boş Sepet Mesajı */
+  .cart-container p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-top: 2rem;
+  }
+  

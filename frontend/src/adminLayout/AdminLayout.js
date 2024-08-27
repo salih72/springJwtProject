@@ -6,11 +6,11 @@ import AdminNavbar from './AdminNavbar';
 
 const AdminLayout = () => {
   return (
-    <div className="layout">
+    <div className="adminLayout">
       <AdminNavbar />
-      <div className="layout-content">
+      <div className="admin-layout-content">
         <AdminSidebar />
-        <main className="main-content">
+        <main className="admin-main-content">
           <Outlet />
         </main>
       </div>

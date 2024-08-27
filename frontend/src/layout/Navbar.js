@@ -3,22 +3,38 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  
-  // JWT token'ı localStorage'dan al
+
   const token = localStorage.getItem('token');
 
-  // Çıkış yapma fonksiyonu
-  const handleLogout = () => {
-    // localStorage'dan token'ı sil
-    localStorage.removeItem('token');
-    // Kullanıcıyı login sayfasına yönlendir
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:8081/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.ok) {
+        // Token'ı localStorage'dan kaldırma
+        localStorage.removeItem('token');
+  
+        // Kullanıcıyı login sayfasına yönlendirme
+        navigate('/login');
+      } else {
+        console.error('Failed to log out');
+      }
+    } catch (error) {
+      console.error('An error occurred during logout', error);
+    }
   };
+  
 
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">MKK KAFE</Link>
+      <img src="../MKKLogo.png" alt='Merkezi Kayıt Kuruluşu Logo' width="80px" height="120px"/>
       </div>
       <ul className="navbar-links">
         {token ? (

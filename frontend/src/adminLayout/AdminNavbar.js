@@ -5,21 +5,36 @@ import './AdminLayout.css';
 const AdminNavbar = () => {
   const navigate = useNavigate();
   
-  // JWT token'ı localStorage'dan al
   const token = localStorage.getItem('token');
 
-  // Çıkış yapma fonksiyonu
-  const handleLogout = () => {
-    // localStorage'dan token'ı sil
-    localStorage.removeItem('token');
-    // Kullanıcıyı login sayfasına yönlendir
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:8081/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.ok) {
+        localStorage.removeItem('token');
+
+        navigate('/login');
+      } else {
+        console.error('Failed to log out');
+      }
+    } catch (error) {
+      console.error('An error occurred during logout', error);
+    }
   };
+  
 
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <Link to="/">MKK KAFE</Link>
+    <nav className="admin-navbar">
+      <div className="admin-navbar-brand">
+      
+      <img src="../MKKLogo.png" alt='Merkezi Kayıt Kuruluşu Logo' width="100px" height="80px"/>
       </div>
       <ul className="navbar-links">
         {token ? (

@@ -95,10 +95,12 @@ public class OrderService {
 
     public OrderDto convertToDto(Order order) {
         OrderDto dto = new OrderDto();
+        dto.setId(order.getId());
         dto.setUserId(order.getUser().getId());
         dto.setCustomerName(order.getCustomerName());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
+
         //dto.setCustomerAddress(order.getCustomerAddress());
 
         List<ProductDto> productDtos = new ArrayList<>();
@@ -122,7 +124,6 @@ public class OrderService {
         Product product = new Product();
         product.setId(productDto.getId());
         product.setName(productDto.getName());
-        // EKSIK YER OLABİLİR....
         product.setPrice(productDto.getPrice());
         return product;
     }
@@ -136,20 +137,18 @@ public class OrderService {
     }
 
     @Transactional
-    public void toggleOrderStatus(int userId) {
+    public void toggleOrderStatus(int userId,long id) {
         List<Order> orders = orderRepository.findByUserId(userId);
 
         for (Order order : orders) {
-            if (order.getStatus() == Status.PENDING) {
-                order.setStatus(Status.SUCCESS);
-            } else if (order.getStatus() == Status.SUCCESS) {
-                order.setStatus(Status.PENDING);
+            if(order.getId() == id){
+                if (order.getStatus() == Status.PENDING) {
+                    order.setStatus(Status.SUCCESS);
+                } else if (order.getStatus() == Status.SUCCESS) {
+                    order.setStatus(Status.PENDING);
+                }
             }
         }
-
         orderRepository.saveAll(orders);
     }
-
-
-
 }
