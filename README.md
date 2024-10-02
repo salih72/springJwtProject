@@ -1,6 +1,6 @@
-### Spring Boot E-Commerce Application with JWT Authentication and Real-Time Updates
+### Spring Boot E-Commerce Application with React Frontend, JWT Authentication, and Real-Time Updates
 
-This project is a Spring Boot application that provides a RESTful API for an e-commerce platform. It includes user authentication with JWT, product and order management, Kafka integration for messaging, and a WebSocket server for real-time order updates.
+This project is a Spring Boot application that provides a RESTful API for an e-commerce platform. The application includes user authentication with JWT, product and order management, Kafka integration for messaging, and a WebSocket server for real-time order updates. Additionally, there is a React frontend application developed to interact with the backend.
 
 Features
 -----
@@ -20,6 +20,8 @@ WebSocket Server: Real-time order updates via WebSocket for connected clients.
 Asynchronous Processing: Utilize asynchronous services for non-blocking operations.
 
 Exception Handling: Robust error handling and response statuses.
+
+React Frontend: A user-friendly interface developed with React.
 
 Architecture
 -----
@@ -46,6 +48,16 @@ OrderSynchronizer: Kafka consumer that listens to order topics and forwards data
 
 WebSocketServer: WebSocket server for real-time communication with clients.
 
+**3. React Frontend Application:**
+
+Components: Product listing, cart, orders, and user interface components.
+
+State Management: Using React hooks like useState, useEffect, and useRef for state management.
+
+Routing: Page navigation using react-router-dom.
+
+API Requests: Interaction with the backend API using fetch and axios.
+
 Prerequisites
 -----
 
@@ -61,7 +73,12 @@ Zookeeper
 
 A running instance of a database supported by Spring Data JPA (e.g., MySQL, PostgreSQL)
 
-Node.js and npm (if you plan to develop a frontend client)
+Node.js and npm (for the frontend application)
+
+React 17+
+
+npm or yarn package manager
+
 
 -----
 <img width="1025" alt="Screenshot 2024-10-01 at 2 54 59 PM" src="https://github.com/user-attachments/assets/a5076c13-8f66-400d-a8dc-2a401bc2c086">
