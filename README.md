@@ -70,12 +70,6 @@ Node.js and npm (if you plan to develop a frontend client)
 <img width="1063" alt="Screenshot 2024-10-01 at 2 55 07 PM" src="https://github.com/user-attachments/assets/86c70f67-f9ed-40ab-8a00-e57d966cdd80">
 
 -----
-<img width="476" alt="Screenshot 2024-10-01 at 2 57 07 PM" src="https://github.com/user-attachments/assets/28533582-a73c-485f-bf82-7d1427958138">
-
------
-<img width="481" alt="Screenshot 2024-10-01 at 2 57 19 PM" src="https://github.com/user-attachments/assets/b8bc4051-768f-469a-9b36-7de443330b59">
-
------
 <img width="1680" alt="Screenshot 2024-10-01 at 2 58 47 PM" src="https://github.com/user-attachments/assets/9b50d109-20b3-4b53-81dc-c29c144b514f">
 
 -----
@@ -86,5 +80,11 @@ Node.js and npm (if you plan to develop a frontend client)
 
 -----
 <img width="1293" alt="Screenshot 2024-10-01 at 3 30 13 PM" src="https://github.com/user-attachments/assets/42517b7b-4e68-41e7-b3b5-ad47f6ee2a07">
+
+-----
+<img width="476" alt="Screenshot 2024-10-01 at 2 57 07 PM" src="https://github.com/user-attachments/assets/28533582-a73c-485f-bf82-7d1427958138">
+
+-----
+<img width="481" alt="Screenshot 2024-10-01 at 2 57 19 PM" src="https://github.com/user-attachments/assets/b8bc4051-768f-469a-9b36-7de443330b59">
 
 -----
