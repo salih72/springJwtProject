@@ -31,7 +31,7 @@ const Broadcast = () => {
     useEffect(() => {
         fetchOrders();
     
-        socketRef.current = new WebSocket('ws://localhost:8001');
+        socketRef.current = new WebSocket('ws://localhost:8074');
     
         socketRef.current.onopen = () => {
             console.log('WebSocket connection opened');
@@ -70,7 +70,7 @@ const Broadcast = () => {
                 console.log('WebSocket connection closed unexpectedly');
                 setTimeout(() => {
                     console.log('Retrying WebSocket connection...');
-                    socketRef.current = new WebSocket('ws://localhost:8001');
+                    socketRef.current = new WebSocket('ws://localhost:8074');
                 }, 5000);
             }
         };
